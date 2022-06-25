@@ -1,0 +1,540 @@
+fileFormatVersion: 2
+guid: 318090ee22f3579498fa7e98974329c5
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3058380406977854700
+    second: 227-2277120_stick-figure-running-sprite-sheet_0
+  - first:
+      213: 5314858302132408012
+    second: 227-2277120_stick-figure-running-sprite-sheet_1
+  - first:
+      213: -611587287102181104
+    second: 227-2277120_stick-figure-running-sprite-sheet_2
+  - first:
+      213: 3665751520783728872
+    second: 227-2277120_stick-figure-running-sprite-sheet_3
+  - first:
+      213: -5408310938673766717
+    second: 227-2277120_stick-figure-running-sprite-sheet_4
+  - first:
+      213: 7443711772015632165
+    second: 227-2277120_stick-figure-running-sprite-sheet_5
+  - first:
+      213: -712332210129458605
+    second: 227-2277120_stick-figure-running-sprite-sheet_6
+  - first:
+      213: -3886446228249970970
+    second: 227-2277120_stick-figure-running-sprite-sheet_7
+  - first:
+      213: 8258339692934101376
+    second: 227-2277120_stick-figure-running-sprite-sheet_8
+  - first:
+      213: 8585680876776046421
+    second: 227-2277120_stick-figure-running-sprite-sheet_9
+  - first:
+      213: 8374593105790540327
+    second: 227-2277120_stick-figure-running-sprite-sheet_10
+  - first:
+      213: 5705865934445378909
+    second: 227-2277120_stick-figure-running-sprite-sheet_11
+  - first:
+      213: -921528499589501862
+    second: 227-2277120_stick-figure-running-sprite-sheet_12
+  - first:
+      213: -362115229640008093
+    second: 227-2277120_stick-figure-running-sprite-sheet_13
+  - first:
+      213: 2886342827482420457
+    second: 227-2277120_stick-figure-running-sprite-sheet_14
+  - first:
+      213: 9101076878702379357
+    second: 227-2277120_stick-figure-running-sprite-sheet_15
+  - first:
+      213: 8430411605530707653
+    second: 227-2277120_stick-figure-running-sprite-sheet_16
+  - first:
+      213: 4374540454925363159
+    second: 227-2277120_stick-figure-running-sprite-sheet_17
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 60
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cecfde1b6cc817a20800000000000000
+      internalID: 3058380406977854700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_1
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 60
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cce432a677b22c940800000000000000
+      internalID: 5314858302132408012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_2
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 60
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 011312b4a943387f0800000000000000
+      internalID: -611587287102181104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_3
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 60
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e0892f069d5fd230800000000000000
+      internalID: 3665751520783728872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_4
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 60
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ce9d711bd1d1f4b0800000000000000
+      internalID: -5408310938673766717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_5
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 60
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52f926d0b606d4760800000000000000
+      internalID: 7443711772015632165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_6
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 60
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35a2a2501a94d16f0800000000000000
+      internalID: -712332210129458605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_7
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 60
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e6f0862fb1901ac0800000000000000
+      internalID: -3886446228249970970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_8
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 60
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08978d732348b9270800000000000000
+      internalID: 8258339692934101376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55fb91fb447762770800000000000000
+      internalID: 8585680876776046421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_10
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 0
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72a94192f08883470800000000000000
+      internalID: 8374593105790540327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_11
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 0
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5d7e9e16de4f2f40800000000000000
+      internalID: 5705865934445378909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_12
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 0
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5ca19b46b21633f0800000000000000
+      internalID: -921528499589501862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_13
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 0
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36e5c810e1289faf0800000000000000
+      internalID: -362115229640008093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_14
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 0
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e4161452895e0820800000000000000
+      internalID: 2886342827482420457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_15
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 0
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d51839c93358d4e70800000000000000
+      internalID: 9101076878702379357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_16
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 0
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c60df160b6def470800000000000000
+      internalID: 8430411605530707653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 227-2277120_stick-figure-running-sprite-sheet_17
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 0
+        width: 33
+        height: 60
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d7e66fcd5d75bc30800000000000000
+      internalID: 4374540454925363159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
