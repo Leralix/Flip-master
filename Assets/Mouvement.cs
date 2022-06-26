@@ -6,9 +6,9 @@ public class Mouvement : MonoBehaviour
 {
 
     public int movementSpeed;
-    public int movementRatio;
+    public int movementRatioBase;
+    private int movementRatio;
     private float mouvementMultiplier;
-
     public int jumpPower;
     private bool isGrounded, isOnWallRight, isOnWallLeft;
     public Rigidbody2D Body;
@@ -32,6 +32,16 @@ public class Mouvement : MonoBehaviour
         isOnWallRight = Physics2D.OverlapCircle(wallCheckUpRight.position, 0.2f, Platform) && Physics2D.OverlapCircle(wallCheckDownRight.position, 0.2f, Platform);
         isOnWallLeft = Physics2D.OverlapCircle(wallCheckUpLeft.position, 0.2f, Platform) && Physics2D.OverlapCircle(wallCheckDownLeft.position, 0.2f, Platform);
 
+
+        if(isGrounded)
+        {
+            movementRatio = movementRatioBase;
+        }
+        else
+        {
+            movementRatio = movementRatioBase / 2;
+        }
+        
         if (Input.GetKey("d"))
         {
 
@@ -102,8 +112,5 @@ public class Mouvement : MonoBehaviour
         Body.velocity = new Vector2(movementSpeed * (mouvementMultiplier), Body.velocity.y);
         
     }
-    void verticalMovement(int direction, int ratio)
-    {
-
-    }
+    
 }
