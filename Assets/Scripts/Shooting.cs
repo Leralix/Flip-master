@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class Shooting : MonoBehaviour
 {
-    public Camera cam;
+    private Camera cam;
     public GameObject GunRotation;
     private Vector2 mousePos;
 
     public float bulletForce;
     public GameObject GunAmmo;
     public Transform GunBarrel;
-    
 
+
+    private void Awake()
+    {
+        cam = Camera.main;
+    }
 
     // Update is called once per frame
     void Update()

@@ -488,7 +488,7 @@ GameObject:
   - component: {fileID: 4650492703006422263}
   - component: {fileID: 4650492703006422262}
   - component: {fileID: 4650492703006422256}
-  - component: {fileID: 3215469531510476404}
+  - component: {fileID: 753392181992316663}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -619,7 +619,7 @@ MonoBehaviour:
   bulletForce: 0
   GunAmmo: {fileID: 4822135428012331214, guid: ceef5ea259cc35241ad3efd12f7a4b96, type: 3}
   GunBarrel: {fileID: 4333783213320587930}
---- !u!114 &3215469531510476404
+--- !u!114 &753392181992316663
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -628,9 +628,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4650492703006422268}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d34acd6af09867245984f164c6bb06e7, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &4650492703123379680
 GameObject:
   m_ObjectHideFlags: 0
