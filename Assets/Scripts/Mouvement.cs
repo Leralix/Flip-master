@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Mouvement : MonoBehaviour
 {
@@ -16,11 +17,24 @@ public class Mouvement : MonoBehaviour
     public Transform groundCheck1, groundCheck2, wallCheckUpRight, wallCheckDownRight, wallCheckUpLeft, wallCheckDownLeft;
     public LayerMask Platform;
 
+    public PhotonView PV;
+
+    private void Awake()
+    {
+        if (!PV.IsMine)
+        {
+            Destroy(GetComponent<Rigidbody2D>());
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
-        MovePlayer();
+        if(PV.IsMine)
+        {
+            MovePlayer();
+        }
+        
     }
 
     void MovePlayer()
