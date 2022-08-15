@@ -17,6 +17,13 @@ public class Shooting : MonoBehaviour
     private Quaternion gunPos;
     private Vector3 difference;
 
+    private void Awake()
+    {
+        if (PV.IsMine)
+        {
+            
+        }
+    }
     void Update()
     {
         if (PV.IsMine)

@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf6851ce1e080834baa128a6b2ad8aee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitEffect: {fileID: 8587418955487946527, guid: 9a55b5c650a1bd8408b53399f89ddb82, type: 3}
+  PV: {fileID: -3321498735750586020}
 --- !u!114 &-3321498735750586020
 MonoBehaviour:
   m_ObjectHideFlags: 0
