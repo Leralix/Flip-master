@@ -7,6 +7,11 @@ using System.IO;
 public class Shooting : MonoBehaviour
 {
 
+    [SerializeField] Item[] items;
+
+    int itemIndex;
+    int previousItemIndex = -1;
+
 
     public Transform GunBarrel;
     public Transform TriggerPoint;
@@ -17,6 +22,7 @@ public class Shooting : MonoBehaviour
     private Quaternion gunPos;
     private Vector3 difference;
 
+
     private void Awake()
     {
         if (PV.IsMine)
@@ -24,21 +30,66 @@ public class Shooting : MonoBehaviour
             
         }
     }
+
+    private void Start()
+    {
+        if(PV.IsMine)
+        {
+            EquipItem(0);
+        }
+    }
     void Update()
     {
         if (PV.IsMine)
         {
-            RotateArm();
 
+            RotateArm();
             if (Input.GetButtonDown("Fire1"))
             {
                 Shoot();
             }
+                
+            for (int i = 0; i < items.Length; i++)
+            {
+                if(Input.GetKeyDown((i + 1).ToString()))
+                {
+                    EquipItem(i);
+                    break;
+                }
+            }
+
+            if(Input.GetAxisRaw("Mouse ScrollWheel")> 0f)
+            {
+                if(previousItemIndex < items.Length - 1)
+                    EquipItem(previousItemIndex + 1);
+            }
+            else if(Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+            {
+                if (previousItemIndex > 0)
+                    EquipItem(previousItemIndex - 1);
+            }
+
         }
         else
         {
             SmoothNetMovement();
         }
+
+    }
+
+    void EquipItem(int _index)
+    {
+        if (_index == previousItemIndex)
+            return;
+        
+        itemIndex = _index;
+
+        items[itemIndex].ItemGameObject.SetActive(true);
+        if (previousItemIndex != -1)
+        {
+            items[previousItemIndex].ItemGameObject.SetActive(false);
+        }
+        previousItemIndex = itemIndex;
 
     }
 

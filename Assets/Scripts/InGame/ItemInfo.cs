@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControllerScript : MonoBehaviour
+public class ItemInfo : ScriptableObject
 {
-    
+    public string ItemName;
 }
