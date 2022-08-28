@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.IO;
+using HashTable = ExitGames.Client.Photon.Hashtable; //ne fonctione qu'à moitié pas, j'ai copié cette ligne a la création de la Hashtable du coup.
+using Photon.Realtime;
 
-public class Shooting : MonoBehaviour
+public class Shooting : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] Item[] items;
@@ -47,6 +49,7 @@ public class Shooting : MonoBehaviour
             if (Input.GetButtonDown("Fire1"))
             {
                 Shoot();
+                items[itemIndex].Use();
             }
                 
             for (int i = 0; i < items.Length; i++)
@@ -77,7 +80,7 @@ public class Shooting : MonoBehaviour
 
     }
 
-    void EquipItem(int _index)
+    void EquipItem(int _index) 
     {
         if (_index == previousItemIndex)
             return;
@@ -91,16 +94,43 @@ public class Shooting : MonoBehaviour
         }
         previousItemIndex = itemIndex;
 
+        if(PV.IsMine)
+        {
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            hash.Add("itemIndex", itemIndex);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
+            if(items[itemIndex].GetType().IsSubclassOf(typeof(Gun)))
+            {
+                Gun currentgun = (Gun)items[itemIndex];
+                GunBarrel = currentgun.GetShootingPoint();
+
+            }
+
+        }
+
     }
 
-    private void RotateArm()
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, HashTable changedProps)
+    {
+        if(!PV.IsMine && targetPlayer == PV.Owner)
+        {
+            EquipItem((int)changedProps["itemIndex"]);
+
+
+        }
+    }
+
+
+
+    private void RotateArm()   //Bouger l'arme, coté client
     {
         difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - TriggerPoint.position;
         difference.Normalize();
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         TriggerPoint.rotation = Quaternion.Euler(0f, 0f, rotZ + rotationOffset);
     }
-    private void SmoothNetMovement()
+    private void SmoothNetMovement() //Bouger l'arme, coté serveur
     {
         TriggerPoint.rotation = Quaternion.Lerp(TriggerPoint.rotation, gunPos, Time.deltaTime * 8);
     }

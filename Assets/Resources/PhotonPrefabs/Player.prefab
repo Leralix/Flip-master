@@ -432,7 +432,7 @@ GameObject:
   - component: {fileID: 4650492702744113964}
   - component: {fileID: 3161618750127313457}
   - component: {fileID: 5268745571800576317}
-  - component: {fileID: 1858362333244149708}
+  - component: {fileID: 8501053014539543551}
   m_Layer: 7
   m_Name: AK-47
   m_TagString: Untagged
@@ -495,7 +495,7 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &1858362333244149708
+--- !u!114 &8501053014539543551
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -504,11 +504,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4650492702744113965}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f296b944ae182ec49abd69679c40b8f1, type: 3}
+  m_Script: {fileID: 11500000, guid: f900d9ff6f0e1b545a1e0bbba486300f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemInfo: {fileID: 0}
+  itemInfo: {fileID: 11400000, guid: f40e758be02eb4a46a2394ebc889922b, type: 2}
   ItemGameObject: {fileID: 4650492702744113965}
+  shootingPoint: {fileID: 4333783213320587930}
 --- !u!1 &4650492702947500455
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,8 +727,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items:
-  - {fileID: 1858362333244149708}
-  - {fileID: 2148902326679722938}
+  - {fileID: 8501053014539543551}
+  - {fileID: 6103787654149179134}
   GunBarrel: {fileID: 4333783213320587930}
   TriggerPoint: {fileID: 8014960077166173646}
   PV: {fileID: 753392181992316663}
@@ -801,7 +802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6831736010090038108}
   - component: {fileID: 4077086274187152162}
-  - component: {fileID: 2148902326679722938}
+  - component: {fileID: 6103787654149179134}
   m_Layer: 7
   m_Name: Glock
   m_TagString: Untagged
@@ -847,7 +848,7 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2148902326679722938
+--- !u!114 &6103787654149179134
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -856,11 +857,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7088870654536346934}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f296b944ae182ec49abd69679c40b8f1, type: 3}
+  m_Script: {fileID: 11500000, guid: f900d9ff6f0e1b545a1e0bbba486300f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemInfo: {fileID: 0}
+  itemInfo: {fileID: 11400000, guid: 0c1402603c8d2fd4cbdde4e9e146a36b, type: 2}
   ItemGameObject: {fileID: 7088870654536346934}
+  shootingPoint: {fileID: 4727422086002285178}
 --- !u!1 &7492920876437135298
 GameObject:
   m_ObjectHideFlags: 0
