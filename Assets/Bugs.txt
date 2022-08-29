@@ -1,1 +1,9 @@
 Si un joueur rejoins après que la partie a commencé, il ne verra aucune arme jusqu'a ce que les joueurs dans la partie changent d'armes
+
+
+
+
+Crédits:
+
+Vidéo sur les mouvements
+Playlist unity sur le fps multi

@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Mouvement : MonoBehaviour, IDamageable
-{
-    public GameObject respawnPoint;
+using System.IO;
+using HashTable = ExitGames.Client.Photon.Hashtable; //ne fonctione qu'à moitié pas, j'ai copié cette ligne a la création de la Hashtable du coup.
+using Photon.Realtime;
 
+using System.Linq;
+
+public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerController
+{
     public int movementSpeed;
     public int movementRatioBase;
     private int movementRatio;
@@ -22,8 +26,34 @@ public class Mouvement : MonoBehaviour, IDamageable
     int currentHealth = maxHealth;
 
     playerManagerScript playerManager;
-
     public PhotonView PV;
+
+
+    [SerializeField] Item[] items;
+
+    int itemIndex;
+    int previousItemIndex = -1;
+
+
+    private Transform GunBarrel;
+    public Transform TriggerPoint;
+
+    private int rotationOffset = 0;
+    private Quaternion gunPos;
+    private Vector3 difference;
+
+
+
+    public Vector3 Velocity { get; private set; }
+    public bool JumpingThisFrame { get; private set; }
+    public bool LandingThisFrame { get; private set; }
+    public Vector3 RawMovement { get; private set; }
+    public bool Grounded => _colDown;
+
+    private Vector3 _lastPosition;
+    private float _currentHorizontalSpeed, _currentVerticalSpeed;
+
+
 
     private void Awake()
     {
@@ -36,17 +66,23 @@ public class Mouvement : MonoBehaviour, IDamageable
             print("test");
             Camera.main.GetComponent<CameraFollow>().SetActive(this.gameObject);  //Si il y a un bug a cette ligne, c'est parce qu'il n'y a pas le script sur la caméra
             playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<playerManagerScript>(); // pas sûr de le mettre dans le else
-        }
-        
-        
+        }    
     }
 
-    // Update is called once per frame
+    private void Start()
+    {
+        if (PV.IsMine)
+        {
+            EquipItem(0);
+        }
+    }
+
     void Update()
     {
         if(PV.IsMine)
         {
             MovePlayer();
+            MoveGun();
         }
         if(transform.position.y < -100)
         {
@@ -56,6 +92,99 @@ public class Mouvement : MonoBehaviour, IDamageable
 
     }
 
+    #region Collisions
+
+    [Header("COLLISION")] [SerializeField] private Bounds _characterBounds;
+    [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private int _detectorCount = 3;
+    [SerializeField] private float _detectionRayLength = 0.1f;
+    [SerializeField] [Range(0.1f, 0.3f)] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
+
+    private RayRange _raysUp, _raysRight, _raysDown, _raysLeft;
+    private bool _colUp, _colRight, _colDown, _colLeft;
+
+    private float _timeLeftGrounded;
+
+    // We use these raycast checks for pre-collision information
+    private void RunCollisionChecks()
+    {
+        // Generate ray ranges. 
+        CalculateRayRanged();
+
+        // Ground
+        LandingThisFrame = false;
+        var groundedCheck = RunDetection(_raysDown);
+        if (_colDown && !groundedCheck) _timeLeftGrounded = Time.time; // Only trigger when first leaving
+        else if (!_colDown && groundedCheck)
+        {
+            LandingThisFrame = true;
+        }
+
+        _colDown = groundedCheck;
+
+        // The rest
+        _colUp = RunDetection(_raysUp);
+        _colLeft = RunDetection(_raysLeft);
+        _colRight = RunDetection(_raysRight);
+
+        bool RunDetection(RayRange range)
+        {
+            return EvaluateRayPositions(range).Any(point => Physics2D.Raycast(point, range.Dir, _detectionRayLength, _groundLayer));
+        }
+    }
+
+    private void CalculateRayRanged()
+    {
+        // This is crying out for some kind of refactor. 
+        var b = new Bounds(transform.position + _characterBounds.center, _characterBounds.size);
+
+        _raysDown = new RayRange(b.min.x + _rayBuffer, b.min.y, b.max.x - _rayBuffer, b.min.y, Vector2.down);
+        _raysUp = new RayRange(b.min.x + _rayBuffer, b.max.y, b.max.x - _rayBuffer, b.max.y, Vector2.up);
+        _raysLeft = new RayRange(b.min.x, b.min.y + _rayBuffer, b.min.x, b.max.y - _rayBuffer, Vector2.left);
+        _raysRight = new RayRange(b.max.x, b.min.y + _rayBuffer, b.max.x, b.max.y - _rayBuffer, Vector2.right);
+    }
+
+
+    private IEnumerable<Vector2> EvaluateRayPositions(RayRange range)
+    {
+        for (var i = 0; i < _detectorCount; i++)
+        {
+            var t = (float)i / (_detectorCount - 1);
+            yield return Vector2.Lerp(range.Start, range.End, t);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Bounds
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(transform.position + _characterBounds.center, _characterBounds.size);
+
+        // Rays
+        if (!Application.isPlaying)
+        {
+            CalculateRayRanged();
+            Gizmos.color = Color.blue;
+            foreach (var range in new List<RayRange> { _raysUp, _raysRight, _raysDown, _raysLeft })
+            {
+                foreach (var point in EvaluateRayPositions(range))
+                {
+                    Gizmos.DrawRay(point, range.Dir * _detectionRayLength);
+                }
+            }
+        }
+
+        if (!Application.isPlaying) return;
+
+        // Draw the future position. Handy for visualizing gravity
+        Gizmos.color = Color.red;
+        var move = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed) * Time.deltaTime;
+        Gizmos.DrawWireCube(transform.position + _characterBounds.center + move, _characterBounds.size);
+    }
+
+    #endregion
+
+    #region Déplacement
     void MovePlayer()
     {
         isGrounded = Physics2D.OverlapArea(groundCheck1.position, groundCheck2.position, Platform);
@@ -143,8 +272,119 @@ public class Mouvement : MonoBehaviour, IDamageable
         Body.velocity = new Vector2(movementSpeed * (mouvementMultiplier), Body.velocity.y);
         
     }
+    #endregion
+
+    #region Tir et mouvement d'arme
+    void MoveGun()
+    {
+        if (PV.IsMine)
+        {
+
+            RotateArm();
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Shoot();
+                items[itemIndex].Use();
+            }
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (Input.GetKeyDown((i + 1).ToString()))
+                {
+                    EquipItem(i);
+                    break;
+                }
+            }
+
+            if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+            {
+                if (previousItemIndex < items.Length - 1)
+                    EquipItem(previousItemIndex + 1);
+            }
+            else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+            {
+                if (previousItemIndex > 0)
+                    EquipItem(previousItemIndex - 1);
+            }
+
+        }
+        else
+        {
+            SmoothNetMovement();
+        }
+    }
+    void EquipItem(int _index)
+    {
+        if (_index == previousItemIndex)
+            return;
+
+        itemIndex = _index;
+
+        items[itemIndex].ItemGameObject.SetActive(true);
+        if (previousItemIndex != -1)
+        {
+            items[previousItemIndex].ItemGameObject.SetActive(false);
+        }
+        previousItemIndex = itemIndex;
+
+        if (PV.IsMine)
+        {
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            hash.Add("itemIndex", itemIndex);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
+            if (items[itemIndex].GetType().IsSubclassOf(typeof(Gun)))
+            {
+                Gun currentgun = (Gun)items[itemIndex];
+                GunBarrel = currentgun.GetShootingPoint();
+
+            }
+
+        }
+
+    }
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, HashTable changedProps) // utilisé pour synchroniser le changement d'arme
+    {
+        if (!PV.IsMine && targetPlayer == PV.Owner)
+        {
+            EquipItem((int)changedProps["itemIndex"]);
 
 
+        }
+    }
+    private void RotateArm()   //Bouger l'arme, coté client
+    {
+        difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - TriggerPoint.position;
+        difference.Normalize();
+        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+        TriggerPoint.rotation = Quaternion.Euler(0f, 0f, rotZ + rotationOffset);
+    }
+    private void SmoothNetMovement() //Bouger l'arme, coté serveur
+    {
+        TriggerPoint.rotation = Quaternion.Lerp(TriggerPoint.rotation, gunPos, Time.deltaTime * 8);
+    }
+    private void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(TriggerPoint.rotation);
+        }
+        else
+        {
+            gunPos = (Quaternion)stream.ReceiveNext();
+        }
+    }
+    private void Shoot()
+    {
+
+        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), GunBarrel.position, TriggerPoint.rotation);//Quaternion.Euler(GunBarrel.rotation.x, GunBarrel.rotation.y, GunBarrel.rotation.z - 90));
+
+        Bullet.GetComponent<BougerBalle>().InitialiseBullet(GunBarrel.right, ((GunInfo)items[itemIndex].itemInfo).BulletDamage, -1);
+    }
+    #endregion
+
+
+    #region Recevoir des dégats et mourir
     public void TakeDamage(int damage)
     {
         PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
@@ -173,5 +413,6 @@ public class Mouvement : MonoBehaviour, IDamageable
         Camera.main.GetComponent<CameraFollow>().ResetOnPlayer(this.transform); // Ne fonctionne pas, a modifer avec les point de respawn
 
     }
+    #endregion
 }
 

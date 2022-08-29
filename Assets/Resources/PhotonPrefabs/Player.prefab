@@ -586,7 +586,6 @@ GameObject:
   - component: {fileID: 753392181992316663}
   - component: {fileID: 2699983789784424869}
   - component: {fileID: 4650492703006422262}
-  - component: {fileID: 4650492703006422256}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -700,7 +699,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e393d65becd6f3842a925df681ee38a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnPoint: {fileID: 0}
   movementSpeed: 15
   movementRatioBase: 4
   jumpPower: 1700
@@ -715,24 +713,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   PV: {fileID: 753392181992316663}
---- !u!114 &4650492703006422256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4650492703006422268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93bcae8bbabdce147b0671d705e74d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   items:
   - {fileID: 8501053014539543551}
   - {fileID: 6103787654149179134}
-  GunBarrel: {fileID: 4333783213320587930}
   TriggerPoint: {fileID: 8014960077166173646}
-  PV: {fileID: 753392181992316663}
+  _characterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0.5, y: 1, z: 0}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _detectorCount: 3
+  _detectionRayLength: 0.1
+  _rayBuffer: 0.1
 --- !u!1 &4650492703123379680
 GameObject:
   m_ObjectHideFlags: 0
