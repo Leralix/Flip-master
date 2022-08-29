@@ -8,11 +8,15 @@ using System.IO;
 public class BougerBalle : MonoBehaviourPun
 {
     public PhotonView PV;
+    int bulletDamage;
+    int bulletSpeed;
 
 
-    public void ShootBullet(Vector2 shootingDirection)
+    public void InitialiseBullet(Vector2 shootingDirection, int _bulletDamage,int _bulletspeed)
     {
         GetComponent<Rigidbody2D>().AddForce(shootingDirection * 10, ForceMode2D.Impulse);
+        bulletDamage = _bulletDamage;
+        bulletSpeed = _bulletspeed;
     }
 
     [PunRPC]
@@ -46,16 +50,19 @@ public class BougerBalle : MonoBehaviourPun
         if (col.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
 
-            if (!col.gameObject.GetComponent<PhotonView>().IsMine)
-            {
-                GameObject effect = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ExplosionDeBalle"), transform.position, Quaternion.identity);
-                Destroy(effect, 1f);
-                PhotonNetwork.Destroy(gameObject);
-            }
+            if (col.gameObject.GetComponent<PhotonView>().IsMine) 
+                return;
+            
+            GameObject effect = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ExplosionDeBalle"), transform.position, Quaternion.identity);
+            Destroy(effect, 1f);
+            PhotonNetwork.Destroy(gameObject);
 
             
 
-            
+            col.gameObject.GetComponent<IDamageable>()?.TakeDamage(bulletDamage);
+
+
+
         }
         
     }

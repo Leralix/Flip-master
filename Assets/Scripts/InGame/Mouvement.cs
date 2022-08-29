@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Mouvement : MonoBehaviour
+public class Mouvement : MonoBehaviour, IDamageable
 {
+    public GameObject respawnPoint;
 
     public int movementSpeed;
     public int movementRatioBase;
@@ -17,6 +18,11 @@ public class Mouvement : MonoBehaviour
     public Transform groundCheck1, groundCheck2, wallCheckUpRight, wallCheckDownRight, wallCheckUpLeft, wallCheckDownLeft;
     public LayerMask Platform;
 
+    const int maxHealth = 100;
+    int currentHealth = maxHealth;
+
+    playerManagerScript playerManager;
+
     public PhotonView PV;
 
     private void Awake()
@@ -25,6 +31,14 @@ public class Mouvement : MonoBehaviour
         {
             Destroy(GetComponent<Rigidbody2D>());
         }
+        else
+        {
+            print("test");
+            Camera.main.GetComponent<CameraFollow>().SetActive(this.gameObject);  //Si il y a un bug a cette ligne, c'est parce qu'il n'y a pas le script sur la caméra
+            playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<playerManagerScript>(); // pas sûr de le mettre dans le else
+        }
+        
+        
     }
 
     // Update is called once per frame
@@ -34,7 +48,12 @@ public class Mouvement : MonoBehaviour
         {
             MovePlayer();
         }
+        if(transform.position.y < -100)
+        {
+            Die();
+        }
         
+
     }
 
     void MovePlayer()
@@ -124,4 +143,35 @@ public class Mouvement : MonoBehaviour
         Body.velocity = new Vector2(movementSpeed * (mouvementMultiplier), Body.velocity.y);
         
     }
+
+
+    public void TakeDamage(int damage)
+    {
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+    }
+
+    [PunRPC]
+    void RPC_TakeDamage(int damage)
+    {
+        if (!PV.IsMine)
+            return;
+
+        currentHealth -= damage;
+
+        if(currentHealth <= 0)
+        {
+            Die();
+        }
+
+    }
+
+    void Die()
+    {
+        playerManager.Die();
+
+
+        Camera.main.GetComponent<CameraFollow>().ResetOnPlayer(this.transform); // Ne fonctionne pas, a modifer avec les point de respawn
+
+    }
 }
+

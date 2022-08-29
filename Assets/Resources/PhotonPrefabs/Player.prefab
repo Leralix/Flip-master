@@ -700,6 +700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e393d65becd6f3842a925df681ee38a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnPoint: {fileID: 0}
   movementSpeed: 15
   movementRatioBase: 4
   jumpPower: 1700

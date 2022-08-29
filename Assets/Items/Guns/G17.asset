@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: G17
   m_EditorClassIdentifier: 
   ItemName: G17
+  BulletDamage: 30

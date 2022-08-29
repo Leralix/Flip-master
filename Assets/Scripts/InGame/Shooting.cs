@@ -153,8 +153,8 @@ public class Shooting : MonoBehaviourPunCallbacks
 
         GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), GunBarrel.position, TriggerPoint.rotation);//Quaternion.Euler(GunBarrel.rotation.x, GunBarrel.rotation.y, GunBarrel.rotation.z - 90));
 
-        Bullet.GetComponent<BougerBalle>().ShootBullet(GunBarrel.right);
-
-        //Bullet.GetComponent<Rigidbody2D>().AddForce(GunBarrel.right * bulletForce, ForceMode2D.Impulse);
+        Bullet.GetComponent<BougerBalle>().InitialiseBullet(GunBarrel.right, ((GunInfo)items[itemIndex].itemInfo).BulletDamage, -1);
     }
+
+    
 }

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Ak47
   m_EditorClassIdentifier: 
   ItemName: Ak47
+  BulletDamage: 45
