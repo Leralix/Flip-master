@@ -25,7 +25,8 @@ public class playerManagerScript : MonoBehaviour
 
     void CreateController()
     {
-        controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), new Vector3(0,2,0), Quaternion.identity, 0, new object[] { PV.ViewID } );
+        Transform spawnpoint = SpawnManager.instance.getSpawnPoint();
+        controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
     }
 
     public void Die()
