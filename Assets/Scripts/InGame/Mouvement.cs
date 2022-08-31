@@ -11,36 +11,9 @@ using System.Linq;
 
 public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerController
 {
-    public int movementSpeed;
-    public int movementRatioBase;
-    private int movementRatio;
-    private float mouvementMultiplier;
-    public int jumpPower;
-    private bool isGrounded, isOnWallRight, isOnWallLeft;
-    public Rigidbody2D Body;
-
-    public Transform groundCheck1, groundCheck2, wallCheckUpRight, wallCheckDownRight, wallCheckUpLeft, wallCheckDownLeft;
-    public LayerMask Platform;
-
-    const int maxHealth = 100;
-    int currentHealth = maxHealth;
-
-    playerManagerScript playerManager;
+    private Rigidbody2D Body;
+    private playerManagerScript playerManager;
     public PhotonView PV;
-
-
-    [SerializeField] Item[] items;
-
-    int itemIndex;
-    int previousItemIndex = -1;
-
-
-    private Transform GunBarrel;
-    public Transform TriggerPoint;
-
-    private int rotationOffset = 0;
-    private Quaternion gunPos;
-    private Vector3 difference;
 
 
 
@@ -63,9 +36,12 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
         }
         else
         {
-            print("test");
+            Body = GetComponent<Rigidbody2D>();
+            //PV = GetComponent<PhotonView>();
+
             Camera.main.GetComponent<CameraFollow>().SetActive(this.gameObject);  //Si il y a un bug a cette ligne, c'est parce qu'il n'y a pas le script sur la caméra
             playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<playerManagerScript>(); // pas sûr de le mettre dans le else
+            currentHealth = maxHealth; 
         }    
     }
 
@@ -81,15 +57,20 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     {
         if(PV.IsMine)
         {
+            RunCollisionChecks();
             MovePlayer();
             MoveGun();
+            //AddGravity(); dans fixedUpdate
         }
         if(transform.position.y < -100)
         {
             Die();
         }
-        
+    }
 
+    void FixedUpdate()
+    {
+        AddGravity();
     }
 
     #region Collisions
@@ -185,15 +166,19 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     #endregion
 
     #region Déplacement
+
+    [Header("DEPLACEMENT")]
+    [SerializeField] private int movementSpeed;
+    [SerializeField] private int movementRatioBase;
+    private int movementRatio;
+    private float mouvementMultiplier = 0;
+    [SerializeField] private int jumpPower;
+    [SerializeField] private float gravity;
+
     void MovePlayer()
     {
-        isGrounded = Physics2D.OverlapArea(groundCheck1.position, groundCheck2.position, Platform);
         
-        isOnWallRight = Physics2D.OverlapCircle(wallCheckUpRight.position, 0.2f, Platform) && Physics2D.OverlapCircle(wallCheckDownRight.position, 0.2f, Platform);
-        isOnWallLeft = Physics2D.OverlapCircle(wallCheckUpLeft.position, 0.2f, Platform) && Physics2D.OverlapCircle(wallCheckDownLeft.position, 0.2f, Platform);
-
-
-        if(isGrounded)
+        if(_colDown)
         {
             movementRatio = movementRatioBase;
         }
@@ -227,54 +212,80 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             }
             
         }
-        if (!Input.GetKey("q") && !Input.GetKey("q"))
+        if (!Input.GetKey("q") && !Input.GetKey("d"))
         {
-            if (mouvementMultiplier > 0)
+            if (mouvementMultiplier > 0.1)
             {
-                mouvementMultiplier -= Time.deltaTime;
+                mouvementMultiplier -= Time.deltaTime * movementRatio;
             }
-            if (mouvementMultiplier < 0)
+            else if (mouvementMultiplier < -0.1)
             {
-                mouvementMultiplier += Time.deltaTime;
+                mouvementMultiplier += Time.deltaTime * movementRatio;
             }
+            else
+            {
+                mouvementMultiplier = 0;
+            }
+                
         }
         if (Input.GetKeyDown("space"))
         {
-            if(isGrounded)
+            if(_colDown)
             {
                 Body.AddForce(Vector2.up * jumpPower);
             }
-            else if(isOnWallRight)
+            else if(_colRight)
             {
                 Body.AddForce(Vector2.up * jumpPower);
                 mouvementMultiplier = -1f;
             }
-            else if(isOnWallLeft)
+            else if(_colLeft)
             {
                 Body.AddForce(Vector2.up * jumpPower);
                 mouvementMultiplier = 1f;
             }
         }
 
-        //Body.AddForce(Vector2.right * movementSpeed * (mouvementMultiplier + 0.5f) * MovementDirecton);
-
         mouvementMultiplier = Mathf.Clamp(mouvementMultiplier, -1f, 1f);
-        /*if (mouvementMultiplier < -1f)
-        {
-            mouvementMultiplier = -1;
-        }
-        else if (mouvementMultiplier > 1f)
-        {
-            mouvementMultiplier = 1;
-        }*/
 
 
         Body.velocity = new Vector2(movementSpeed * (mouvementMultiplier), Body.velocity.y);
-        
+
+    }
+    #endregion
+
+    #region gravité
+    void AddGravity()
+    {
+
+        if(_colDown || _colRight && Input.GetKey("d") || _colLeft && Input.GetKey("q"))
+        {
+            Body.velocity = new Vector2(Body.velocity.x, 0);
+        }
+        else
+        {
+            Body.velocity = new Vector2(Body.velocity.x, Body.velocity.y - gravity);
+        }
     }
     #endregion
 
     #region Tir et mouvement d'arme
+
+    [Header("TIR & MOUVEMENT")]
+    [SerializeField] int maxHealth;
+    int currentHealth;
+
+    [SerializeField] Item[] items;
+    int itemIndex;
+    int previousItemIndex = -1;
+
+    private Transform GunBarrel;
+    public Transform TriggerPoint;
+
+    private int rotationOffset = 0;
+    private Quaternion gunPos;
+    private Vector3 difference;
+
     void MoveGun()
     {
         if (PV.IsMine)
@@ -382,7 +393,6 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
         Bullet.GetComponent<BougerBalle>().InitialiseBullet(GunBarrel.right, ((GunInfo)items[itemIndex].itemInfo).BulletDamage, -1);
     }
     #endregion
-
 
     #region Recevoir des dégats et mourir
     public void TakeDamage(int damage)

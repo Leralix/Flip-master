@@ -626,11 +626,11 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 10
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &4650492703006422259
 CapsuleCollider2D:
@@ -699,24 +699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e393d65becd6f3842a925df681ee38a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 15
-  movementRatioBase: 4
-  jumpPower: 1700
-  Body: {fileID: 4650492703006422257}
-  groundCheck1: {fileID: 4650492702275611007}
-  groundCheck2: {fileID: 4650492702491012526}
-  wallCheckUpRight: {fileID: 4650492702947500454}
-  wallCheckDownRight: {fileID: 4650492703123379687}
-  wallCheckUpLeft: {fileID: 4650492701805519982}
-  wallCheckDownLeft: {fileID: 4650492701573597095}
-  Platform:
-    serializedVersion: 2
-    m_Bits: 64
   PV: {fileID: 753392181992316663}
-  items:
-  - {fileID: 8501053014539543551}
-  - {fileID: 6103787654149179134}
-  TriggerPoint: {fileID: 8014960077166173646}
   _characterBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 1, z: 0}
@@ -726,6 +709,15 @@ MonoBehaviour:
   _detectorCount: 3
   _detectionRayLength: 0.1
   _rayBuffer: 0.1
+  movementSpeed: 15
+  movementRatioBase: 4
+  jumpPower: 1000
+  gravity: 0.6
+  maxHealth: 100
+  items:
+  - {fileID: 8501053014539543551}
+  - {fileID: 6103787654149179134}
+  TriggerPoint: {fileID: 8014960077166173646}
 --- !u!1 &4650492703123379680
 GameObject:
   m_ObjectHideFlags: 0
