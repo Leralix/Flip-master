@@ -14,3 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: G17
   BulletDamage: 30
+  magasineSize: 7
+  bulletPerTap: 1
+  timeBetweenShooting: 0.2
+  spread: 1
+  range: 5
+  reloadTime: 1
+  timeBetweenShots: 0.5
+  isAutomatic: 0

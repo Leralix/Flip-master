@@ -14,3 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemName: Ak47
   BulletDamage: 45
+  magasineSize: 30
+  bulletPerTap: 1
+  timeBetweenShooting: 0.15
+  spread: 0.2
+  range: 10
+  reloadTime: 2
+  timeBetweenShots: 1
+  isAutomatic: 1

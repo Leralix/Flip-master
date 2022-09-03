@@ -83,6 +83,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
     private RayRange _raysUp, _raysRight, _raysDown, _raysLeft;
     private bool _colUp, _colRight, _colDown, _colLeft;
+    private bool _isOnLeftWall, _isOnRightWall, _OnGround, _onAir;
 
     private float _timeLeftGrounded;
 
@@ -257,15 +258,35 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     #region gravité
     void AddGravity()
     {
+        //float actualTime = Time.time - _timeLeftGrounded;
 
-        if(_colDown || _colRight && Input.GetKey("d") || _colLeft && Input.GetKey("q"))
+        _isOnLeftWall = _colRight;
+        _isOnRightWall = _colLeft;
+        _OnGround = _colDown;
+        _onAir = !_colRight && !_colLeft && !_colDown;
+
+        
+        if (_isOnLeftWall && Input.GetKey("q")|| _isOnRightWall && Input.GetKey("d")) //Accroché a un mur
         {
-            Body.velocity = new Vector2(Body.velocity.x, 0);
+            Body.velocity = new Vector2(Body.velocity.x, 0); 
+        }
+        else if (_isOnLeftWall || _isOnRightWall)
+        {
+            Body.velocity = new Vector2(Body.velocity.x, 0.1f);
+        }
+        else if (Input.GetKey("z")) 
+        {
+            Body.velocity = new Vector2(Body.velocity.x, Body.velocity.y - gravity * 0.8f);
+        }
+        else if (Input.GetKey("s"))
+        {
+            Body.velocity = new Vector2(Body.velocity.x, Body.velocity.y - gravity * 1.3f);
         }
         else
         {
             Body.velocity = new Vector2(Body.velocity.x, Body.velocity.y - gravity);
         }
+        
     }
     #endregion
 
@@ -276,6 +297,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     int currentHealth;
 
     [SerializeField] Item[] items;
+    public GunController gunController;
     int itemIndex;
     int previousItemIndex = -1;
 
@@ -292,11 +314,6 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
         {
 
             RotateArm();
-            if (Input.GetButtonDown("Fire1"))
-            {
-                Shoot();
-                items[itemIndex].Use();
-            }
 
             for (int i = 0; i < items.Length; i++)
             {
@@ -344,13 +361,14 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             hash.Add("itemIndex", itemIndex);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-            if (items[itemIndex].GetType().IsSubclassOf(typeof(Gun)))
+            GunBarrel = items[itemIndex].aimingPoint;
+            
+
+            if (items[itemIndex].GetType() == typeof(Gun))
             {
-                Gun currentgun = (Gun)items[itemIndex];
-                GunBarrel = currentgun.GetShootingPoint();
-
+                gunController.ChangeItem((Gun)items[itemIndex]);
             }
-
+            
         }
 
     }
@@ -385,13 +403,6 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             gunPos = (Quaternion)stream.ReceiveNext();
         }
     }
-    private void Shoot()
-    {
-
-        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), GunBarrel.position, TriggerPoint.rotation);//Quaternion.Euler(GunBarrel.rotation.x, GunBarrel.rotation.y, GunBarrel.rotation.z - 90));
-
-        Bullet.GetComponent<BougerBalle>().InitialiseBullet(GunBarrel.right, ((GunInfo)items[itemIndex].itemInfo).BulletDamage, -1);
-    }
     #endregion
 
     #region Recevoir des dégats et mourir
@@ -418,7 +429,6 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     void Die()
     {
         playerManager.Die();
-
 
         Camera.main.GetComponent<CameraFollow>().ResetOnPlayer(this.transform); // Ne fonctionne pas, a modifer avec les point de respawn
 

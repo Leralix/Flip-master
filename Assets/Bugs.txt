@@ -3,7 +3,24 @@ Si un joueur rejoins après que la partie a commencé, il ne verra aucune arme j
 
 
 
+
+A ajouter:
+
+balles limités + recharge (pas sûr pour recharge)
+Armes automatiques, semi-auto, fusil a pompe
+Ramasser, jeter et seulement 2 armes a la fois
+refonte des mouvements
+Recul des armes
+Refonte des collisions (entre les joueurs)
+HUD
+Refonte du menu principal
+Animations in game
+
+
+
+
 Crédits:
 
 Vidéo sur les mouvements
 Playlist unity sur le fps multi
+How to make ALL kinds of GUNS with just ONE script! (Unity3d tutorial)

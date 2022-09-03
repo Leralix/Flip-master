@@ -12,9 +12,10 @@ public class BougerBalle : MonoBehaviourPun
     int bulletSpeed;
 
 
-    public void InitialiseBullet(Vector2 shootingDirection, int _bulletDamage,int _bulletspeed)
+    public void InitialiseBullet(Vector2 shootingDirection, int _bulletDamage,int _bulletspeed, float spread)
     {
-        GetComponent<Rigidbody2D>().AddForce(shootingDirection * 10, ForceMode2D.Impulse);
+        GetComponent<Rigidbody2D>().AddForce(this.transform.right * 10, ForceMode2D.Impulse);
+        //GetComponent<Rigidbody2D>().rotation = spread;
         bulletDamage = _bulletDamage;
         bulletSpeed = _bulletspeed;
     }
