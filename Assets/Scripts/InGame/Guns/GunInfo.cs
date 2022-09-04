@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "FPS/New Gun")]
 public class GunInfo : ItemInfo
 {
-    public int BulletDamage, magasineSize, bulletPerTap;
+    public int BulletDamage, magasineSize, bulletPerTap, speed, bulletsShot;
     public float timeBetweenShooting, spread, range, reloadTime, timeBetweenShots;
     public bool isAutomatic;
 

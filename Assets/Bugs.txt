@@ -1,5 +1,5 @@
 Si un joueur rejoins après que la partie a commencé, il ne verra aucune arme jusqu'a ce que les joueurs dans la partie changent d'armes
-
+Si les balles vont trop vites, elle peuvent traverser les murs
 
 
 
@@ -8,9 +8,10 @@ A ajouter:
 
 balles limités + recharge (pas sûr pour recharge)
 Armes automatiques, semi-auto, fusil a pompe
+
 Ramasser, jeter et seulement 2 armes a la fois
+
 refonte des mouvements
-Recul des armes
 Refonte des collisions (entre les joueurs)
 HUD
 Refonte du menu principal

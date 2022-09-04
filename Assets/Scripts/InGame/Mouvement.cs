@@ -36,12 +36,14 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
         }
         else
         {
+            gameObject.tag = "MyPlayer";
+
             Body = GetComponent<Rigidbody2D>();
             //PV = GetComponent<PhotonView>();
 
             Camera.main.GetComponent<CameraFollow>().SetActive(this.gameObject);  //Si il y a un bug a cette ligne, c'est parce qu'il n'y a pas le script sur la caméra
             playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<playerManagerScript>(); // pas sûr de le mettre dans le else
-            currentHealth = maxHealth; 
+            currentHealth = maxHealth;
         }    
     }
 
@@ -60,6 +62,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             RunCollisionChecks();
             MovePlayer();
             MoveGun();
+            pickItem();
             //AddGravity(); dans fixedUpdate
         }
         if(transform.position.y < -100)
@@ -290,13 +293,18 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     }
     #endregion
 
-    #region Tir et mouvement d'arme
+    #region Inventaire et mouvement d'arme
 
     [Header("TIR & MOUVEMENT")]
     [SerializeField] int maxHealth;
     int currentHealth;
 
-    [SerializeField] Item[] items;
+    [SerializeField] Item[] itemList;
+    [SerializeField] Item[] currentItemList;
+
+    private bool canPickItem;
+    private Gun gunThatCanBePicked;
+
     public GunController gunController;
     int itemIndex;
     int previousItemIndex = -1;
@@ -315,7 +323,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
             RotateArm();
 
-            for (int i = 0; i < items.Length; i++)
+            for (int i = 0; i < itemList.Length; i++)
             {
                 if (Input.GetKeyDown((i + 1).ToString()))
                 {
@@ -326,7 +334,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
             if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
             {
-                if (previousItemIndex < items.Length - 1)
+                if (previousItemIndex < itemList.Length - 1)
                     EquipItem(previousItemIndex + 1);
             }
             else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
@@ -341,6 +349,27 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             SmoothNetMovement();
         }
     }
+    public void CanPickItem(Gun gun)
+    {
+        canPickItem = true;
+        gunThatCanBePicked = gun;
+    }
+
+    public void CannotPickItem()
+    {
+        canPickItem = false;
+        gunThatCanBePicked = null;
+    }
+
+    public void pickItem()
+    {
+        if(canPickItem && Input.GetKeyDown("e"))
+        {
+            currentItemList[itemIndex] = gunThatCanBePicked;
+        }
+        
+    }
+
     void EquipItem(int _index)
     {
         if (_index == previousItemIndex)
@@ -348,10 +377,10 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
         itemIndex = _index;
 
-        items[itemIndex].ItemGameObject.SetActive(true);
+        itemList[itemIndex].ItemGameObject.SetActive(true);
         if (previousItemIndex != -1)
         {
-            items[previousItemIndex].ItemGameObject.SetActive(false);
+            itemList[previousItemIndex].ItemGameObject.SetActive(false);
         }
         previousItemIndex = itemIndex;
 
@@ -361,12 +390,12 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             hash.Add("itemIndex", itemIndex);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-            GunBarrel = items[itemIndex].aimingPoint;
+            GunBarrel = itemList[itemIndex].aimingPoint;
             
 
-            if (items[itemIndex].GetType() == typeof(Gun))
+            if (itemList[itemIndex].GetType() == typeof(Gun))
             {
-                gunController.ChangeItem((Gun)items[itemIndex]);
+                gunController.ChangeItem((Gun)itemList[itemIndex]);
             }
             
         }

@@ -14,6 +14,7 @@ public class GunController : MonoBehaviour
     private Transform GunBarrel;
 
     private int currentGunAmmo = 0;
+    private int currentGunBulletShot = 0;
     private bool isShooting = false, readyToShoot = true, isReloading = false;
 
     public void Update()
@@ -28,7 +29,11 @@ public class GunController : MonoBehaviour
 
         if (Input.GetKeyDown("r") && currentGunAmmo < currentGunInfo.magasineSize) Reload();
 
-        if (isShooting && readyToShoot && !isReloading && currentGunAmmo > 0) Shoot();
+        if (isShooting && readyToShoot && !isReloading && currentGunAmmo > 0)
+        {
+            currentGunBulletShot = currentGunInfo.bulletsShot;
+            Shoot();
+        }
     }
 
     public void ChangeItem(Gun newGun)
@@ -36,16 +41,24 @@ public class GunController : MonoBehaviour
         gunEquiped = newGun;
         currentGunInfo = (GunInfo)gunEquiped.itemInfo;
         currentGunAmmo = currentGunInfo.magasineSize;
+        currentGunBulletShot = currentGunInfo.bulletsShot;
         GunBarrel = newGun.aimingPoint;
     }
 
     private void Shoot()
     {
         readyToShoot = false;
-        currentGunAmmo--;
+
         ShootBullet();
+        currentGunAmmo--;
+        currentGunBulletShot--;
 
         Invoke("ResetShot", currentGunInfo.timeBetweenShooting);
+
+        if(currentGunBulletShot > 0 && currentGunAmmo > 0)
+        {
+            Invoke("Shoot", currentGunInfo.timeBetweenShots);
+        }
     }
 
     private void ResetShot()
@@ -59,12 +72,19 @@ public class GunController : MonoBehaviour
         float spread = Random.Range(-currentGunInfo.spread, currentGunInfo.spread) * 10;
         Quaternion Rotation = Quaternion.Euler(TriggerPoint.rotation.eulerAngles.x, TriggerPoint.rotation.eulerAngles.y, TriggerPoint.rotation.eulerAngles.z + spread) ;
 
-        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), GunBarrel.position, Rotation);//Quaternion.Euler(GunBarrel.rotation.x, GunBarrel.rotation.y, GunBarrel.rotation.z - 90));
-        Bullet.GetComponent<BougerBalle>().InitialiseBullet(GunBarrel.right, currentGunInfo.BulletDamage, -1,spread);
+        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), GunBarrel.position, Rotation);
+        Bullet.GetComponent<BougerBalle>().InitialiseBullet(GunBarrel.right, currentGunInfo.BulletDamage, currentGunInfo.speed, spread);
     }
 
     private void Reload()
     {
+        isReloading = true;
+        Invoke("FinishedReloading", currentGunInfo.reloadTime);
+    }
+
+    private void FinishedReloading()
+    {
+        isReloading = false;
         currentGunAmmo = currentGunInfo.magasineSize;
     }
 
