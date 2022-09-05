@@ -299,11 +299,11 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     [SerializeField] int maxHealth;
     int currentHealth;
 
-    [SerializeField] Item[] itemList;
-    [SerializeField] Item[] currentItemList;
+    List<Item> itemList = new List<Item>();
 
     private bool canPickItem;
-    private Gun gunThatCanBePicked;
+    private Item itemThatCanBePicked;
+    private ItemOnGround itemHolderOfTheGun;
 
     public GunController gunController;
     int itemIndex;
@@ -323,7 +323,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
             RotateArm();
 
-            for (int i = 0; i < itemList.Length; i++)
+            for (int i = 0; i < itemList.Count; i++)
             {
                 if (Input.GetKeyDown((i + 1).ToString()))
                 {
@@ -334,7 +334,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
             if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
             {
-                if (previousItemIndex < itemList.Length - 1)
+                if (previousItemIndex < itemList.Count - 1)
                     EquipItem(previousItemIndex + 1);
             }
             else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
@@ -349,23 +349,29 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             SmoothNetMovement();
         }
     }
-    public void CanPickItem(Gun gun)
+    public void CanPickItem(Item item, ItemOnGround itemHolder)
     {
         canPickItem = true;
-        gunThatCanBePicked = gun;
+        itemThatCanBePicked = item;
+        itemHolderOfTheGun = itemHolder;
     }
 
     public void CannotPickItem()
     {
         canPickItem = false;
-        gunThatCanBePicked = null;
+        itemThatCanBePicked = null;
     }
 
     public void pickItem()
     {
         if(canPickItem && Input.GetKeyDown("e"))
         {
-            currentItemList[itemIndex] = gunThatCanBePicked;
+            itemList.Add(itemThatCanBePicked);
+            itemHolderOfTheGun.ItemHasBeenPicked();
+
+            GameObject newGun = Instantiate(itemList[itemIndex].gameObject, TriggerPoint.position, TriggerPoint.rotation);
+            newGun.transform.parent = TriggerPoint.transform;
+
         }
         
     }

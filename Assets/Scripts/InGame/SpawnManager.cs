@@ -16,7 +16,7 @@ public class SpawnManager : MonoBehaviour
 
     public Transform getSpawnPoint()
     {
-        return spawnpoints[Random.Range(0, spawnpoints.Length)].transform; 
+        return spawnpoints[Random.Range(0, spawnpoints.Length)].transform;
     }
 
 }

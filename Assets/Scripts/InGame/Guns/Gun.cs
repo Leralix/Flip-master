@@ -9,4 +9,10 @@ public class Gun : Item
     {
 
     }
+
+    public void ReceiveGunInfo(ItemInfo itemInfo, Transform aimingPoint, Sprite itemSprite)
+    {
+        //GetComponentInParent<Item>(). 
+    }
+
 }

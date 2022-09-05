@@ -8,6 +8,7 @@ public abstract class Item : MonoBehaviour
     public GameObject ItemGameObject;
 
     public Transform aimingPoint;
+    public SpriteRenderer ItemSprite;
 
     public abstract void Use();
 

@@ -24,6 +24,7 @@ public class GunController : MonoBehaviour
 
     private void Inputs()
     {
+        if (gunEquiped == null) return;
         if (currentGunInfo.isAutomatic) isShooting = Input.GetButton("Fire1");
         else isShooting = Input.GetButtonDown("Fire1");
 
