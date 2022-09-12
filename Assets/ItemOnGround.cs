@@ -18,7 +18,7 @@ public class ItemOnGround : MonoBehaviour
             return;
         }
         itemFrame = GetComponentInChildren<SpriteRenderer>();
-        itemFrame.sprite = item.ItemSprite.sprite;
+        itemFrame.sprite = item.itemSprite.sprite;
 
     }
 

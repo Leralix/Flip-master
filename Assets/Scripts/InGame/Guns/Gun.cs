@@ -10,9 +10,12 @@ public class Gun : Item
 
     }
 
-    public void ReceiveGunInfo(ItemInfo itemInfo, Transform aimingPoint, Sprite itemSprite)
+    public void ReceiveGunInfo(Gun newGun)
     {
-        //GetComponentInParent<Item>(). 
+        print(newGun.itemInfo);
+        itemInfo = newGun.itemInfo;
+        aimingPoint = newGun.aimingPoint;
+        itemSprite.sprite = newGun.itemSprite.sprite;
     }
 
 }

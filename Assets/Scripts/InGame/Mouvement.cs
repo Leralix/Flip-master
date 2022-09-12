@@ -299,7 +299,8 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     [SerializeField] int maxHealth;
     int currentHealth;
 
-    List<Item> itemList = new List<Item>();
+    //List<Item> itemList = new List<Item>();
+    public Item[] EquipedItems;
 
     private bool canPickItem;
     private Item itemThatCanBePicked;
@@ -323,7 +324,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
             RotateArm();
 
-            for (int i = 0; i < itemList.Count; i++)
+            for (int i = 0; i < EquipedItems.Length; i++)
             {
                 if (Input.GetKeyDown((i + 1).ToString()))
                 {
@@ -334,7 +335,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
             if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
             {
-                if (previousItemIndex < itemList.Count - 1)
+                if (previousItemIndex < EquipedItems.Length - 1)
                     EquipItem(previousItemIndex + 1);
             }
             else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
@@ -366,12 +367,19 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     {
         if(canPickItem && Input.GetKeyDown("e"))
         {
-            itemList.Add(itemThatCanBePicked);
-            itemHolderOfTheGun.ItemHasBeenPicked();
+            if(true) // faut vérif si c'est un Gun ou un Item
+            {
+                ((Gun)EquipedItems[itemIndex]).ReceiveGunInfo((Gun)itemThatCanBePicked);
+                gunController.ChangeItem((Gun)EquipedItems[itemIndex]);
+                itemHolderOfTheGun.ItemHasBeenPicked();
+                
 
-            GameObject newGun = Instantiate(itemList[itemIndex].gameObject, TriggerPoint.position, TriggerPoint.rotation);
-            newGun.transform.parent = TriggerPoint.transform;
+                //GameObject newGun = Instantiate(EquipedItems[itemIndex].gameObject, TriggerPoint.position, TriggerPoint.rotation);
+                //newGun.transform.parent = TriggerPoint.transform;
+            }
+            
 
+            CannotPickItem();
         }
         
     }
@@ -383,10 +391,10 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
         itemIndex = _index;
 
-        itemList[itemIndex].ItemGameObject.SetActive(true);
+        EquipedItems[itemIndex].gameObject.SetActive(true);
         if (previousItemIndex != -1)
         {
-            itemList[previousItemIndex].ItemGameObject.SetActive(false);
+            EquipedItems[previousItemIndex].gameObject.SetActive(false);
         }
         previousItemIndex = itemIndex;
 
@@ -396,12 +404,12 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             hash.Add("itemIndex", itemIndex);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-            GunBarrel = itemList[itemIndex].aimingPoint;
+            GunBarrel = EquipedItems[itemIndex].aimingPoint;
             
 
-            if (itemList[itemIndex].GetType() == typeof(Gun))
+            if (EquipedItems[itemIndex].GetType() == typeof(Gun))
             {
-                gunController.ChangeItem((Gun)itemList[itemIndex]);
+                gunController.ChangeItem((Gun)EquipedItems[itemIndex]);
             }
             
         }

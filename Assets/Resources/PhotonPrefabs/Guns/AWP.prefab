@@ -181,6 +181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemInfo: {fileID: 11400000, guid: 2b62a51c705622444846eaf020fb33b8, type: 2}
-  ItemGameObject: {fileID: 6913796136248943583}
+  icon: {fileID: 0}
   aimingPoint: {fileID: 7990853323122053364}
-  ItemSprite: {fileID: 6664081772451414197}
+  itemSprite: {fileID: 6664081772451414197}

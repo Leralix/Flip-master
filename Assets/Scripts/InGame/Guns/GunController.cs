@@ -17,6 +17,11 @@ public class GunController : MonoBehaviour
     private int currentGunBulletShot = 0;
     private bool isShooting = false, readyToShoot = true, isReloading = false;
 
+    public void Awake()
+    {
+        
+    }
+
     public void Update()
     {
         Inputs();
@@ -24,7 +29,7 @@ public class GunController : MonoBehaviour
 
     private void Inputs()
     {
-        if (gunEquiped == null) return;
+        if (currentGunInfo == null) return;
         if (currentGunInfo.isAutomatic) isShooting = Input.GetButton("Fire1");
         else isShooting = Input.GetButtonDown("Fire1");
 
@@ -39,11 +44,17 @@ public class GunController : MonoBehaviour
 
     public void ChangeItem(Gun newGun)
     {
+        if (newGun.itemInfo == null)
+        {
+            print("pas de gun");
+            return;
+        }
         gunEquiped = newGun;
         currentGunInfo = (GunInfo)gunEquiped.itemInfo;
         currentGunAmmo = currentGunInfo.magasineSize;
         currentGunBulletShot = currentGunInfo.bulletsShot;
         GunBarrel = newGun.aimingPoint;
+        
     }
 
     private void Shoot()
@@ -73,8 +84,8 @@ public class GunController : MonoBehaviour
         float spread = Random.Range(-currentGunInfo.spread, currentGunInfo.spread) * 10;
         Quaternion Rotation = Quaternion.Euler(TriggerPoint.rotation.eulerAngles.x, TriggerPoint.rotation.eulerAngles.y, TriggerPoint.rotation.eulerAngles.z + spread) ;
 
-        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), GunBarrel.position, Rotation);
-        Bullet.GetComponent<BougerBalle>().InitialiseBullet(GunBarrel.right, currentGunInfo.BulletDamage, currentGunInfo.speed, spread);
+        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), TriggerPoint.position + GunBarrel.position, Rotation);
+        Bullet.GetComponent<BougerBalle>().InitialiseBullet(TriggerPoint.position + GunBarrel.right, currentGunInfo.BulletDamage, currentGunInfo.speed, spread);
     }
 
     private void Reload()

@@ -117,9 +117,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemInfo: {fileID: 11400000, guid: f40e758be02eb4a46a2394ebc889922b, type: 2}
-  ItemGameObject: {fileID: 8449352380037401550}
+  icon: {fileID: 0}
   aimingPoint: {fileID: 715878411438305913}
-  ItemSprite: {fileID: 8449352381735393876}
+  itemSprite: {fileID: 8449352381735393876}
 --- !u!1 &8449352381735393874
 GameObject:
   m_ObjectHideFlags: 0

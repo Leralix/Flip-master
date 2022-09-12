@@ -5,10 +5,9 @@ using UnityEngine;
 public abstract class Item : MonoBehaviour
 {
     public ItemInfo itemInfo;
-    public GameObject ItemGameObject;
-
+    public Sprite icon;
     public Transform aimingPoint;
-    public SpriteRenderer ItemSprite;
+    public SpriteRenderer itemSprite;
 
     public abstract void Use();
 
