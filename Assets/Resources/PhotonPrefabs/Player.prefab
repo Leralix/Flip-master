@@ -329,6 +329,7 @@ GameObject:
   - component: {fileID: 4650492703006422259}
   - component: {fileID: 753392181992316663}
   - component: {fileID: 2699983789784424869}
+  - component: {fileID: 7139184369428397815}
   - component: {fileID: 4650492703006422262}
   - component: {fileID: 9106151574951375048}
   m_Layer: 7
@@ -367,9 +368,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 4
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -430,6 +431,68 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &7139184369428397815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4650492703006422268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 05764a6a1e17b7940916212dee4c75d7, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cfe2b543-2dbe-4927-9ca3-dfd320dbbd92
+    m_ActionName: PlayerAZERTY/Move[/Keyboard/q,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4650492703006422262}
+        m_TargetAssemblyTypeName: Mouvement, Assembly-CSharp
+        m_MethodName: Jump
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ef0bb791-7ba9-47c4-b4a3-5a5d1ce0e756
+    m_ActionName: PlayerAZERTY/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cbe1f11e-0c0a-4b76-90bb-fc69b83aca0f
+    m_ActionName: PlayerAZERTY/Shoot[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b968c549-527a-4737-8dfe-9db7dc6e5b19
+    m_ActionName: PlayerAZERTY/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ceed85fe-e40a-4d43-a64c-b89cf3bd0fe6
+    m_ActionName: UI/New action
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: KeyboardMouse
+  m_DefaultActionMap: PlayerAZERTY
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!114 &4650492703006422262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,6 +506,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PV: {fileID: 753392181992316663}
+  PlayerJump: 0
+  horizontalAxis: 0
   _characterBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 1, z: 0}
@@ -454,7 +519,7 @@ MonoBehaviour:
   _rayBuffer: 0.1
   movementSpeed: 15
   movementRatioBase: 4
-  jumpPower: 1000
+  jumpPower: 1400
   gravity: 0.6
   maxHealth: 100
   EquipedItems:
