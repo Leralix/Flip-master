@@ -84,8 +84,11 @@ public class GunController : MonoBehaviour
         float spread = Random.Range(-currentGunInfo.spread, currentGunInfo.spread) * 10;
         Quaternion Rotation = Quaternion.Euler(TriggerPoint.rotation.eulerAngles.x, TriggerPoint.rotation.eulerAngles.y, TriggerPoint.rotation.eulerAngles.z + spread) ;
 
-        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), TriggerPoint.position + GunBarrel.position, Rotation);
+        
+        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), TriggerPoint.localPosition + GunBarrel.position, Rotation);
         Bullet.GetComponent<BougerBalle>().InitialiseBullet(TriggerPoint.position + GunBarrel.right, currentGunInfo.BulletDamage, currentGunInfo.speed, spread);
+
+        
     }
 
     private void Reload()

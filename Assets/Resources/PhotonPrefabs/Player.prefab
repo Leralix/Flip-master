@@ -519,8 +519,7 @@ MonoBehaviour:
   _rayBuffer: 0.1
   movementSpeed: 15
   movementRatioBase: 4
-  jumpPower: 1400
-  gravity: 0.6
+  jumpPower: 1000
   maxHealth: 100
   EquipedItems:
   - {fileID: 3804126072339948218}

@@ -14,7 +14,9 @@ public class Gun : Item
     {
         print(newGun.itemInfo);
         itemInfo = newGun.itemInfo;
-        aimingPoint = newGun.aimingPoint;
+        print(aimingPoint);
+        aimingPoint.position = newGun.aimingPoint.position;
+        print(aimingPoint);
         itemSprite.sprite = newGun.itemSprite.sprite;
     }
 

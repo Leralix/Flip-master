@@ -178,7 +178,6 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     private int movementRatio;
     private float mouvementMultiplier = 0;
     [SerializeField] private int jumpPower;
-    [SerializeField] private float gravity;
 
     void MovePlayer()
     {
@@ -282,15 +281,11 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
         }
         else if (Input.GetKey("z")) 
         {
-            Body.velocity = new Vector2(Body.velocity.x, Body.velocity.y - gravity * 0.8f);
+            Body.gravityScale = 0.8F;
         }
         else if (Input.GetKey("s"))
         {
-            Body.velocity = new Vector2(Body.velocity.x, Body.velocity.y - gravity * 1.3f);
-        }
-        else
-        {
-            Body.velocity = new Vector2(Body.velocity.x, Body.velocity.y - gravity);
+            Body.gravityScale = 1.3F;
         }
         
     }
