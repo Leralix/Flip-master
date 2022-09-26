@@ -15,8 +15,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     private playerManagerScript playerManager;
     public PhotonView PV;
 
-    public bool PlayerJump;
-    public float horizontalAxis;
+
 
     public Vector3 Velocity { get; private set; }
     public bool JumpingThisFrame { get; private set; }
@@ -62,8 +61,8 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
         {
             RunCollisionChecks();
             MovePlayer();
-            //MoveGun();
-            //pickItem();
+            MoveGun();
+            pickItem();
             //AddGravity(); dans fixedUpdate
         }
         if(transform.position.y < -100)
@@ -74,7 +73,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
     void FixedUpdate()
     {
-        //AddGravity();
+        AddGravity();
     }
 
     #region Collisions
@@ -181,7 +180,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
     void MovePlayer()
     {
-        /*
+        
         if(_colDown)
         {
             movementRatio = movementRatioBase;
@@ -232,11 +231,9 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             }
                 
         }
-        */
-        if (PlayerJump)
+        if (Input.GetKeyDown("space"))
         {
-            PlayerJump = false;
-            if (_colDown)
+            if(_colDown)
             {
                 Body.AddForce(Vector2.up * jumpPower);
             }
@@ -475,18 +472,5 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
     }
     #endregion
-
-
-    #region controls
-
-    public void Jump()
-    {
-        PlayerJump = true;
-    }
-
-    #endregion
-
-
-
 }
 
