@@ -334,7 +334,7 @@ GameObject:
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -474,6 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TriggerPoint: {fileID: 8014960077166173646}
+  GunBarrel: {fileID: 2075846893349795114}
 --- !u!1 &4991664161083419662
 GameObject:
   m_ObjectHideFlags: 0

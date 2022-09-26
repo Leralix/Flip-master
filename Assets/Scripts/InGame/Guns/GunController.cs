@@ -11,7 +11,7 @@ public class GunController : MonoBehaviour
 
     private Gun gunEquiped;
     private GunInfo currentGunInfo;
-    private Transform GunBarrel;
+    [SerializeField] private Transform GunBarrel;
 
     private int currentGunAmmo = 0;
     private int currentGunBulletShot = 0;
@@ -40,21 +40,27 @@ public class GunController : MonoBehaviour
             currentGunBulletShot = currentGunInfo.bulletsShot;
             Shoot();
         }
+        if (Input.GetKeyDown("p")) RunTest();
+    }
+
+    private void RunTest()
+    {
+        GunBarrel.position = GunBarrel.position + GunBarrel.position;
     }
 
     public void ChangeItem(Gun newGun)
     {
         if (newGun.itemInfo == null)
         {
-            print("pas de gun");
             return;
         }
         gunEquiped = newGun;
         currentGunInfo = (GunInfo)gunEquiped.itemInfo;
         currentGunAmmo = currentGunInfo.magasineSize;
         currentGunBulletShot = currentGunInfo.bulletsShot;
-        GunBarrel = newGun.aimingPoint;
-        
+        print(newGun.aimingPoint.position);
+        GunBarrel.localPosition = newGun.aimingPoint.position;
+        //GunBarrel.position -= newGun.transform.position;
     }
 
     private void Shoot()

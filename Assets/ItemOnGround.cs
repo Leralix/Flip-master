@@ -19,13 +19,11 @@ public class ItemOnGround : MonoBehaviour
         }
         itemFrame = GetComponentInChildren<SpriteRenderer>();
         itemFrame.sprite = item.itemSprite.sprite;
-
     }
 
     public void GiveItem(Item newItem)
     {
         item = newItem;
-        print(newItem.name);
         Setup();
     }
 
@@ -36,9 +34,7 @@ public class ItemOnGround : MonoBehaviour
             Player = collision.gameObject.GetComponent<Mouvement>();
             Player.CanPickItem((Gun)item, this);
             GrabButton.SetActive(true);
-
         }
-        
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -46,7 +42,6 @@ public class ItemOnGround : MonoBehaviour
         if (collision.gameObject.tag == "MyPlayer")
         {
             GrabButton.SetActive(false);
-            
         }
     }
 
