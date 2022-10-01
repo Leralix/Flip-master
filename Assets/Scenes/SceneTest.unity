@@ -6564,10 +6564,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 0}
-      propertyPath: sceneViewId
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4310670792568792752, guid: bcfc1d44ae666bc4e8222663f6463d1e, type: 3}
       propertyPath: m_Name
       value: ItemManager
@@ -6616,6 +6612,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4310670792568792767, guid: bcfc1d44ae666bc4e8222663f6463d1e, type: 3}
+      propertyPath: ItemList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310670792568792767, guid: bcfc1d44ae666bc4e8222663f6463d1e, type: 3}
+      propertyPath: ItemList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: f40e758be02eb4a46a2394ebc889922b, type: 2}
     m_RemovedComponents:
     - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: bcfc1d44ae666bc4e8222663f6463d1e, type: 3}

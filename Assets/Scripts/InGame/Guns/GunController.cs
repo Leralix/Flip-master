@@ -17,10 +17,6 @@ public class GunController : MonoBehaviour
     private int currentGunBulletShot = 0;
     private bool isShooting = false, readyToShoot = true, isReloading = false;
 
-    public void Awake()
-    {
-        
-    }
 
     public void Update()
     {
@@ -45,7 +41,10 @@ public class GunController : MonoBehaviour
 
     private void RunTest()
     {
-        GunBarrel.position = GunBarrel.position + GunBarrel.position;
+        print(GunBarrel.localPosition);
+        print(currentGunInfo.barrelPosition);
+        //GunBarrel.localPosition += new Vector3(1,0,0);
+        print("testDone");
     }
 
     public void ChangeItem(Gun newGun)
@@ -58,9 +57,8 @@ public class GunController : MonoBehaviour
         currentGunInfo = (GunInfo)gunEquiped.itemInfo;
         currentGunAmmo = currentGunInfo.magasineSize;
         currentGunBulletShot = currentGunInfo.bulletsShot;
-        print(newGun.aimingPoint.position);
-        GunBarrel.localPosition = newGun.aimingPoint.position;
-        //GunBarrel.position -= newGun.transform.position;
+        print(newGun.aimingPoint.localPosition);
+        GunBarrel.localPosition = currentGunInfo.barrelPosition;
     }
 
     private void Shoot()
@@ -90,8 +88,9 @@ public class GunController : MonoBehaviour
         float spread = Random.Range(-currentGunInfo.spread, currentGunInfo.spread) * 10;
         Quaternion Rotation = Quaternion.Euler(TriggerPoint.rotation.eulerAngles.x, TriggerPoint.rotation.eulerAngles.y, TriggerPoint.rotation.eulerAngles.z + spread) ;
 
-        
-        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), TriggerPoint.localPosition + GunBarrel.position, Rotation);
+        //print("TriggerPoint.position" + TriggerPoint.position);
+        //print("TriggerPoint.position" + TriggerPoint.position);
+        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), GunBarrel.position, Rotation);
         Bullet.GetComponent<BougerBalle>().InitialiseBullet(TriggerPoint.position + GunBarrel.right, currentGunInfo.BulletDamage, currentGunInfo.speed, spread);
 
         

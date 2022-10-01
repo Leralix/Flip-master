@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2075846893349795114}
   m_Layer: 7
-  m_Name: Barrel
+  m_Name: Barrel1
   m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 1863858268804410202}
   - component: {fileID: 999592185266756521}
   m_Layer: 7
-  m_Name: Sprite
+  m_Name: Sprite2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -485,7 +485,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1687317535393173633}
   m_Layer: 7
-  m_Name: Barrel
+  m_Name: Barrel2
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -516,7 +516,7 @@ GameObject:
   - component: {fileID: 3534053625020597669}
   - component: {fileID: 1634197258005401564}
   m_Layer: 7
-  m_Name: Sprite
+  m_Name: Sprite1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

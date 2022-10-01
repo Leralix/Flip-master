@@ -298,7 +298,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     public Item[] EquipedItems;
 
     private bool canPickItem;
-    private Item itemThatCanBePicked;
+    private ItemInfo itemThatCanBePicked;
     private ItemOnGround itemHolderOfTheGun;
 
     public GunController gunController;
@@ -345,10 +345,11 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             SmoothNetMovement();
         }
     }
-    public void CanPickItem(Item item, ItemOnGround itemHolder)
+
+    public void CanPickItem(ItemInfo itemInfo, ItemOnGround itemHolder)
     {
         canPickItem = true;
-        itemThatCanBePicked = item;
+        itemThatCanBePicked = itemInfo;
         itemHolderOfTheGun = itemHolder;
     }
 
@@ -362,12 +363,16 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     {
         if(canPickItem && Input.GetKeyDown("e"))
         {
+            print(itemThatCanBePicked.GetType());
             if(true) // faut vérif si c'est un Gun ou un Item
             {
-                ((Gun)EquipedItems[itemIndex]).ReceiveGunInfo((Gun)itemThatCanBePicked);
-                gunController.ChangeItem((Gun)EquipedItems[itemIndex]);
+                //((Gun)EquipedItems[itemIndex]).ReceiveGunInfo((Gun)itemThatCanBePicked);
+                //gunController.ChangeItem((Gun)EquipedItems[itemIndex]);
+                //itemHolderOfTheGun.ItemHasBeenPicked();
+
                 itemHolderOfTheGun.ItemHasBeenPicked();
-                
+                ((Gun)EquipedItems[itemIndex]).ReceiveGunInfo((GunInfo)itemThatCanBePicked);
+                gunController.ChangeItem((Gun)EquipedItems[itemIndex]);
 
                 //GameObject newGun = Instantiate(EquipedItems[itemIndex].gameObject, TriggerPoint.position, TriggerPoint.rotation);
                 //newGun.transform.parent = TriggerPoint.transform;

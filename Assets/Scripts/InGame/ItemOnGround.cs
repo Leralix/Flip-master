@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class ItemOnGround : MonoBehaviour
 {
-    public Item item;
+    private ItemInfo iteminfo;
     [SerializeField] private GameObject GrabButton;
     private SpriteRenderer itemFrame;
     private Mouvement Player;
 
     private void Setup()
     {
-        if (item == null)
+        if (iteminfo == null)
         {
             Debug.Log("Bug de Map: Aucun Item dans un ItemHolder");
             gameObject.SetActive(false);
             return;
         }
         itemFrame = GetComponentInChildren<SpriteRenderer>();
-        itemFrame.sprite = item.itemSprite.sprite;
+        itemFrame.sprite = iteminfo.itemSprite;  
     }
 
-    public void GiveItem(Item newItem)
+    public void GiveItem(ItemInfo newItemInfo)
     {
-        item = newItem;
+        iteminfo = newItemInfo;
+        
         Setup();
     }
 
@@ -32,7 +33,7 @@ public class ItemOnGround : MonoBehaviour
         if(collision.gameObject.tag == "MyPlayer")
         {
             Player = collision.gameObject.GetComponent<Mouvement>();
-            Player.CanPickItem((Gun)item, this);
+            Player.CanPickItem(iteminfo, this);
             GrabButton.SetActive(true);
         }
     }

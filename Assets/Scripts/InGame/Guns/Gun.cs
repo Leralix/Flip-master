@@ -10,11 +10,13 @@ public class Gun : Item
 
     }
 
-    public void ReceiveGunInfo(Gun newGun)
+    public void ReceiveGunInfo(GunInfo newGunInfo)
     {
-        itemInfo = newGun.itemInfo;
-        aimingPoint.position = newGun.aimingPoint.position;
-        itemSprite.sprite = newGun.itemSprite.sprite;
-    }
+        itemInfo = newGunInfo;
+        print("aming point:" + aimingPoint.position);
+        print("New gun:" + newGunInfo.barrelPosition);
+        aimingPoint.position = newGunInfo.barrelPosition;
+        itemSprite.sprite = newGunInfo.itemSprite;
+}
 
 }

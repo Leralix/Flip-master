@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebda5ec56d232024b9aeaaf1e8c6893b, type: 3}
   m_Name: Ak47
   m_EditorClassIdentifier: 
+  itemSprite: {fileID: 21300000, guid: c9ef79ba59db38f40bd698e29162563d, type: 3}
+  TriggerPos: {x: 0.3, y: -0.07, z: 0}
   ItemName: Ak47
   BulletDamage: 45
   magasineSize: 30
@@ -24,3 +26,4 @@ MonoBehaviour:
   reloadTime: 2
   timeBetweenShots: 1
   isAutomatic: 1
+  barrelPosition: {x: 1.16, y: 0.12, z: 0}
