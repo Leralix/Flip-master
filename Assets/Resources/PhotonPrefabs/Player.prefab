@@ -452,15 +452,15 @@ MonoBehaviour:
   _detectorCount: 3
   _detectionRayLength: 0.1
   _rayBuffer: 0.1
-  movementSpeed: 15
-  movementRatioBase: 4
+  Speed: 25
+  maxVelocityChange: 50
   jumpPower: 1000
   maxHealth: 100
   EquipedItems:
   - {fileID: 3804126072339948218}
   - {fileID: 3509434805692239011}
-  gunController: {fileID: 9106151574951375048}
   TriggerPoint: {fileID: 8014960077166173646}
+  GunRecoil: 100
 --- !u!114 &9106151574951375048
 MonoBehaviour:
   m_ObjectHideFlags: 0

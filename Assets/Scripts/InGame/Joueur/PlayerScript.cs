@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
-
-using System.IO;
-using HashTable = ExitGames.Client.Photon.Hashtable; //ne fonctione qu'à moitié pas, j'ai copié cette ligne a la création de la Hashtable du coup.
 using Photon.Realtime;
-
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using UnityEngine;
+using HashTable = ExitGames.Client.Photon.Hashtable; //ne fonctione qu'à moitié pas, j'ai copié cette ligne a la création de la Hashtable du coup.
 
-public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerController
+public class PlayerScript : MonoBehaviourPunCallbacks, IDamageable, IPlayerController
 {
     private Rigidbody2D Body;
     private playerManagerScript playerManager;
@@ -44,7 +41,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             Camera.main.GetComponent<CameraFollow>().SetActive(this.gameObject);  //Si il y a un bug a cette ligne, c'est parce qu'il n'y a pas le script sur la caméra
             playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<playerManagerScript>(); // pas sûr de le mettre dans le else
             currentHealth = maxHealth;
-        }    
+        }
     }
 
     private void Start()
@@ -57,15 +54,16 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
     void Update()
     {
-        if(PV.IsMine)
+        if (PV.IsMine)
         {
             RunCollisionChecks();
             MovePlayer();
             MoveGun();
+            Inputs();
             pickItem();
             //AddGravity(); dans fixedUpdate
         }
-        if(transform.position.y < -100)
+        if (transform.position.y < -100)
         {
             Die();
         }
@@ -172,87 +170,44 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     #region Déplacement
 
     [Header("DEPLACEMENT")]
-    [SerializeField] private int movementSpeed;
-    [SerializeField] private int movementRatioBase;
-    private int movementRatio;
-    private float mouvementMultiplier = 0;
+    [SerializeField] private int Speed;
+    [SerializeField] private int maxVelocityChange;
     [SerializeField] private int jumpPower;
 
     void MovePlayer()
     {
-        
-        if(_colDown)
-        {
-            movementRatio = movementRatioBase;
-        }
-        else
-        {
-            movementRatio = movementRatioBase / 2;
-        }
-        
+        Vector3 targetVelocity = new Vector3(0, 0, 0);
+
         if (Input.GetKey("d"))
         {
-
-            if(mouvementMultiplier < 0)
-            {
-                mouvementMultiplier += Time.deltaTime * movementRatio;
-            }
-            else
-            {
-                mouvementMultiplier += Time.deltaTime * (movementRatio * 2);
-            }
+            targetVelocity.x = Speed;
 
         }
         if (Input.GetKey("q"))
         {
-            if (mouvementMultiplier > 0)
-            {
-                mouvementMultiplier -= Time.deltaTime * movementRatio;
-            }
-            else
-            {
-                mouvementMultiplier -= Time.deltaTime * (movementRatio * 2);
-            }
-            
+            targetVelocity.x = -Speed;
         }
+
+        Vector3 velocity = Body.velocity;
+        Vector3 velocityChange = (targetVelocity - velocity);
+        velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
+        velocityChange.y = 0;
+
         if (!Input.GetKey("q") && !Input.GetKey("d"))
         {
-            if (mouvementMultiplier > 0.1)
-            {
-                mouvementMultiplier -= Time.deltaTime * movementRatio;
-            }
-            else if (mouvementMultiplier < -0.1)
-            {
-                mouvementMultiplier += Time.deltaTime * movementRatio;
-            }
-            else
-            {
-                mouvementMultiplier = 0;
-            }
-                
+
+
         }
         if (Input.GetKeyDown("space"))
         {
-            if(_colDown)
+            if (_colDown)
             {
                 Body.AddForce(Vector2.up * jumpPower);
-            }
-            else if(_colRight)
-            {
-                Body.AddForce(Vector2.up * jumpPower);
-                mouvementMultiplier = -1f;
-            }
-            else if(_colLeft)
-            {
-                Body.AddForce(Vector2.up * jumpPower);
-                mouvementMultiplier = 1f;
             }
         }
 
-        mouvementMultiplier = Mathf.Clamp(mouvementMultiplier, -1f, 1f);
 
-
-        Body.velocity = new Vector2(movementSpeed * (mouvementMultiplier), Body.velocity.y);
+        Body.AddForce(velocityChange, ForceMode2D.Force);
 
     }
     #endregion
@@ -267,16 +222,16 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
         _OnGround = _colDown;
         _onAir = !_colRight && !_colLeft && !_colDown;
 
-        
-        if (_isOnLeftWall && Input.GetKey("q")|| _isOnRightWall && Input.GetKey("d")) //Accroché a un mur
+
+        if (_isOnLeftWall && Input.GetKey("q") || _isOnRightWall && Input.GetKey("d")) //Accroché a un mur
         {
-            Body.velocity = new Vector2(Body.velocity.x, 0); 
+            Body.velocity = new Vector2(Body.velocity.x, 0);
         }
         else if (_isOnLeftWall || _isOnRightWall)
         {
             Body.velocity = new Vector2(Body.velocity.x, 0.1f);
         }
-        else if (Input.GetKey("z")) 
+        else if (Input.GetKey("z"))
         {
             Body.gravityScale = 0.8F;
         }
@@ -284,7 +239,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
         {
             Body.gravityScale = 1.3F;
         }
-        
+
     }
     #endregion
 
@@ -301,7 +256,6 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     private ItemInfo itemThatCanBePicked;
     private ItemOnGround itemHolderOfTheGun;
 
-    public GunController gunController;
     int itemIndex;
     int previousItemIndex = -1;
 
@@ -361,10 +315,10 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
     public void pickItem()
     {
-        if(canPickItem && Input.GetKeyDown("e"))
+        if (canPickItem && Input.GetKeyDown("e"))
         {
             print(itemThatCanBePicked.GetType());
-            if(true) // faut vérif si c'est un Gun ou un Item
+            if (true) // faut vérif si c'est un Gun ou un Item
             {
                 //((Gun)EquipedItems[itemIndex]).ReceiveGunInfo((Gun)itemThatCanBePicked);
                 //gunController.ChangeItem((Gun)EquipedItems[itemIndex]);
@@ -372,16 +326,16 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
                 itemHolderOfTheGun.ItemHasBeenPicked();
                 ((Gun)EquipedItems[itemIndex]).ReceiveGunInfo((GunInfo)itemThatCanBePicked);
-                gunController.ChangeItem((Gun)EquipedItems[itemIndex]);
+                ChangeItem((Gun)EquipedItems[itemIndex]);
 
                 //GameObject newGun = Instantiate(EquipedItems[itemIndex].gameObject, TriggerPoint.position, TriggerPoint.rotation);
                 //newGun.transform.parent = TriggerPoint.transform;
             }
-            
+
 
             CannotPickItem();
         }
-        
+
     }
 
     void EquipItem(int _index)
@@ -405,13 +359,13 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
             GunBarrel = EquipedItems[itemIndex].aimingPoint;
-            
+
 
             if (EquipedItems[itemIndex].GetType() == typeof(Gun))
             {
-                gunController.ChangeItem((Gun)EquipedItems[itemIndex]);
+                ChangeItem((Gun)EquipedItems[itemIndex]);
             }
-            
+
         }
 
     }
@@ -448,6 +402,96 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
     }
     #endregion
 
+    #region Tir
+
+    private Gun gunEquiped;
+    private GunInfo currentGunInfo;
+
+    [SerializeField] private int GunRecoil;
+    private int currentGunAmmo = 0;
+    private int currentGunBulletShot = 0;
+    private bool isShooting = false, readyToShoot = true, isReloading = false;
+
+    private void Inputs()
+    {
+        if (currentGunInfo == null) return;
+        if (currentGunInfo.isAutomatic) isShooting = Input.GetButton("Fire1");
+        else isShooting = Input.GetButtonDown("Fire1");
+
+        if (Input.GetKeyDown("r") && currentGunAmmo < currentGunInfo.magasineSize) Reload();
+
+        if (isShooting && readyToShoot && !isReloading && currentGunAmmo > 0)
+        {
+            currentGunBulletShot = currentGunInfo.bulletsShot;
+            Shoot();
+        }
+        if (Input.GetKeyDown("p")) RunTest();
+    }
+
+    public void RunTest()
+    {
+
+    }
+
+    public void ChangeItem(Gun newGun)
+    {
+        if (newGun.itemInfo == null)
+        {
+            return;
+        }
+        gunEquiped = newGun;
+        currentGunInfo = (GunInfo)gunEquiped.itemInfo;
+        currentGunAmmo = currentGunInfo.magasineSize;
+        currentGunBulletShot = currentGunInfo.bulletsShot;
+        print(newGun.aimingPoint.localPosition);
+        GunBarrel.localPosition = currentGunInfo.barrelPosition;
+    }
+
+    private void Shoot()
+    {
+        readyToShoot = false;
+
+        ShootBullet();
+        currentGunAmmo--;
+        currentGunBulletShot--;
+
+        Invoke("ResetShot", currentGunInfo.timeBetweenShooting);
+
+        if (currentGunBulletShot > 0 && currentGunAmmo > 0)
+        {
+            Invoke("Shoot", currentGunInfo.timeBetweenShots);
+        }
+    }
+
+    private void ResetShot()
+    {
+        readyToShoot = true;
+    }
+
+    private void ShootBullet()
+    {
+        //Spread
+        float spread = Random.Range(-currentGunInfo.spread, currentGunInfo.spread) * 10;
+        Quaternion Rotation = Quaternion.Euler(TriggerPoint.rotation.eulerAngles.x, TriggerPoint.rotation.eulerAngles.y, TriggerPoint.rotation.eulerAngles.z + spread);
+
+        GameObject Bullet = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Balle"), GunBarrel.position, Rotation);
+        Body.AddForce((transform.position - GunBarrel.position) * GunRecoil);
+        Bullet.GetComponent<BougerBalle>().InitialiseBullet(TriggerPoint.position + GunBarrel.right, currentGunInfo.BulletDamage, currentGunInfo.speed, spread);
+    }
+
+    private void Reload()
+    {
+        isReloading = true;
+        Invoke("FinishedReloading", currentGunInfo.reloadTime);
+    }
+
+    private void FinishedReloading()
+    {
+        isReloading = false;
+        currentGunAmmo = currentGunInfo.magasineSize;
+    }
+    #endregion
+
     #region Recevoir des dégats et mourir
     public void TakeDamage(int damage)
     {
@@ -462,7 +506,7 @@ public class Mouvement : MonoBehaviourPunCallbacks, IDamageable, IPlayerControll
 
         currentHealth -= damage;
 
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             Die();
         }

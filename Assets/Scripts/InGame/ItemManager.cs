@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
+using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 
 public class ItemManager : MonoBehaviour
@@ -23,7 +22,6 @@ public class ItemManager : MonoBehaviour
 
     public void spawnWeapon()
     {
-        print("test");
         int position = Random.Range(0, ItemSpawnPoints.Length);
 
         ItemOnGround Holder = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ItemHolder"), ItemSpawnPoints[position].position, Quaternion.identity).GetComponent<ItemOnGround>();

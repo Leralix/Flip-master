@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemOnGround : MonoBehaviour
@@ -7,7 +5,7 @@ public class ItemOnGround : MonoBehaviour
     private ItemInfo iteminfo;
     [SerializeField] private GameObject GrabButton;
     private SpriteRenderer itemFrame;
-    private Mouvement Player;
+    private PlayerScript Player;
 
     private void Setup()
     {
@@ -18,21 +16,21 @@ public class ItemOnGround : MonoBehaviour
             return;
         }
         itemFrame = GetComponentInChildren<SpriteRenderer>();
-        itemFrame.sprite = iteminfo.itemSprite;  
+        itemFrame.sprite = iteminfo.itemSprite;
     }
 
     public void GiveItem(ItemInfo newItemInfo)
     {
         iteminfo = newItemInfo;
-        
+
         Setup();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "MyPlayer")
+        if (collision.gameObject.tag == "MyPlayer")
         {
-            Player = collision.gameObject.GetComponent<Mouvement>();
+            Player = collision.gameObject.GetComponent<PlayerScript>();
             Player.CanPickItem(iteminfo, this);
             GrabButton.SetActive(true);
         }
