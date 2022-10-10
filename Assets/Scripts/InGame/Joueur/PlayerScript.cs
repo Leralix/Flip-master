@@ -317,7 +317,6 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IDamageable, IPlayerContr
     {
         if (canPickItem && Input.GetKeyDown("e"))
         {
-            print(itemThatCanBePicked.GetType());
             if (true) // faut vérif si c'est un Gun ou un Item
             {
                 //((Gun)EquipedItems[itemIndex]).ReceiveGunInfo((Gun)itemThatCanBePicked);
