@@ -38,7 +38,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IDamageable, IPlayerContr
             Body = GetComponent<Rigidbody2D>();
             //PV = GetComponent<PhotonView>();
 
-            Camera.main.GetComponent<CameraFollow>().SetActive(this.gameObject);  //Si il y a un bug a cette ligne, c'est parce qu'il n'y a pas le script sur la caméra
+            Camera.main.GetComponent<CameraFollow>().SetActive(gameObject);  //Si il y a un bug a cette ligne, c'est parce qu'il n'y a pas le script sur la caméra
             playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<playerManagerScript>(); // pas sûr de le mettre dans le else
             currentHealth = maxHealth;
         }
@@ -173,7 +173,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IDamageable, IPlayerContr
     [SerializeField] private int Speed;
     [SerializeField] private int maxVelocityChange;
     [SerializeField] private int jumpPower;
-
+    Vector3 velocityChange;
     void MovePlayer()
     {
         Vector3 targetVelocity = new Vector3(0, 0, 0);
@@ -189,15 +189,11 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IDamageable, IPlayerContr
         }
 
         Vector3 velocity = Body.velocity;
-        Vector3 velocityChange = (targetVelocity - velocity);
+        velocityChange = (targetVelocity - velocity);
         velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
         velocityChange.y = 0;
 
-        if (!Input.GetKey("q") && !Input.GetKey("d"))
-        {
-
-
-        }
+        
         if (Input.GetKeyDown("space"))
         {
             if (_colDown)
@@ -207,7 +203,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IDamageable, IPlayerContr
         }
 
 
-        Body.AddForce(velocityChange, ForceMode2D.Force);
+        
 
     }
     #endregion
@@ -217,29 +213,37 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IDamageable, IPlayerContr
     {
         //float actualTime = Time.time - _timeLeftGrounded;
 
-        _isOnLeftWall = _colRight;
-        _isOnRightWall = _colLeft;
+        _isOnLeftWall = _colLeft;
+        _isOnRightWall = _colRight;
         _OnGround = _colDown;
         _onAir = !_colRight && !_colLeft && !_colDown;
 
 
         if (_isOnLeftWall && Input.GetKey("q") || _isOnRightWall && Input.GetKey("d")) //Accroché a un mur
         {
-            Body.velocity = new Vector2(Body.velocity.x, 0);
+            velocityChange.x = 0;
+            velocityChange.z = 0;
         }
-        else if (_isOnLeftWall || _isOnRightWall)
+        if (_isOnLeftWall && Input.GetKey("space")) // walljump gauche
         {
-            Body.velocity = new Vector2(Body.velocity.x, 0.1f);
+            Body.AddForce(Vector2.up * jumpPower + Vector2.right * jumpPower);
         }
+        if (_isOnRightWall && Input.GetKey("space")) // walljump gauche
+        {
+            print("test");
+            Body.AddForce(Vector2.up * jumpPower + Vector2.left * jumpPower);
+        }
+
         else if (Input.GetKey("z"))
         {
-            Body.gravityScale = 0.8F;
+            Body.gravityScale = 0.5F;
         }
         else if (Input.GetKey("s"))
         {
-            Body.gravityScale = 1.3F;
+            Body.gravityScale = 2F;
         }
 
+        Body.AddForce(velocityChange, ForceMode2D.Force);
     }
     #endregion
 
@@ -379,11 +383,24 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IDamageable, IPlayerContr
     }
     private void RotateArm()   //Bouger l'arme, coté client
     {
-        difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - TriggerPoint.position;
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z += Camera.main.transform.position.z;
+
+        difference = TriggerPoint.position - Camera.main.ScreenToWorldPoint(mousePos);
         difference.Normalize();
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         TriggerPoint.rotation = Quaternion.Euler(0f, 0f, rotZ + rotationOffset);
     }
+
+    public Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(screenPosition);
+        Plane xy = new Plane(Vector3.forward, new Vector3(0, 0, z));
+        float distance;
+        xy.Raycast(ray, out distance);
+        return ray.GetPoint(distance);
+    }
+
     private void SmoothNetMovement() //Bouger l'arme, coté serveur
     {
         TriggerPoint.rotation = Quaternion.Lerp(TriggerPoint.rotation, gunPos, Time.deltaTime * 8);

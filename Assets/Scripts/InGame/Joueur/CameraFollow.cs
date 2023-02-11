@@ -3,14 +3,20 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    private Vector3 offset = new Vector3(0, 0, -10);
+    public int xOffset, yOffset, zOffset;
+
+
+    private Vector3 offset;
     private float smoothTime = 0.25f;
     private Vector3 velocity = Vector3.zero;
 
     private bool isPlayerAlive = false;
     private Transform target;
 
-
+    private void Start()
+    {
+        offset = new Vector3(xOffset, yOffset, zOffset);
+    }
     private void Update()
     {
         if(isPlayerAlive && target != null)
